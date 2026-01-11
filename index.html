@@ -153,16 +153,9 @@
 
 <main class="flex-grow max-w-6xl mx-auto px-4 sm:px-6 w-full pb-16">
     
-    <!-- Hero & Search Section (Professional Layout) -->
-    <div class="py-10 sm:py-14 flex flex-col items-center">
-        <h1 class="text-2xl sm:text-3xl font-bold text-corporate text-center mb-3">
-            มาตรฐานแม่บ้านมืออาชีพ <span class="text-action">ที่คุณวางใจได้</span>
-        </h1>
-        <p class="text-slate-500 text-sm text-center mb-8 max-w-2xl font-light">
-            แพลตฟอร์มรวบรวมผู้ให้บริการทำความสะอาดที่ผ่านการคัดกรอง ยืนยันตัวตน และมีความเป็นมืออาชีพ เพื่อความปลอดภัยและความสะอาดสูงสุด
-        </p>
-
-        <!-- Search Container (Clean & Sharp) -->
+    <!-- Search Section (Clean Layout) -->
+    <div class="py-8 sm:py-10 flex flex-col items-center">
+        <!-- Search Container -->
         <div class="search-container w-full max-w-4xl p-5 bg-white relative z-10">
             <!-- Row 1: Inputs -->
             <div class="flex flex-col sm:flex-row gap-4 mb-4">
@@ -185,29 +178,12 @@
                 </div>
             </div>
             
-            <!-- Row 2: Register Button (Main Action) -->
+            <!-- Row 2: Register Button -->
             <div class="pt-4 border-t border-slate-100">
                 <button onclick="openNewPostModal()" class="btn-corporate w-full py-3 flex items-center justify-center gap-2 text-sm shadow-sm hover:shadow-md transition-all">
                     <i class="fa-solid fa-clipboard-check text-actionHover"></i> 
                     ลงทะเบียนผู้ให้บริการใหม่
                 </button>
-            </div>
-        </div>
-
-        <!-- Status Bar -->
-        <div class="mt-6 flex items-center gap-4 text-xs text-slate-500">
-            <div class="flex items-center gap-1.5">
-                <i class="fa-solid fa-circle-check text-green-600"></i>
-                <span>ยืนยันตัวตนแล้ว</span>
-            </div>
-            <span class="w-1 h-1 bg-slate-300 rounded-full"></span>
-            <div class="flex items-center gap-1.5">
-                <i class="fa-solid fa-star text-yellow-500"></i>
-                <span>รีวิวคุณภาพ</span>
-            </div>
-            <span class="w-1 h-1 bg-slate-300 rounded-full"></span>
-            <div class="font-medium">
-                พร้อมให้บริการ <span id="countTutors" class="text-corporate font-bold">0</span> ราย
             </div>
         </div>
     </div>
@@ -217,7 +193,7 @@
         <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Loading Database...</p>
     </div>
     
-    <!-- Grid System -->
+    <!-- Grid System (2 Cols Mobile) -->
     <section id="board" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 mb-12"></section>
 
     <!-- Pagination -->
@@ -262,9 +238,15 @@
             </div>
             <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2 px-4" id="viewImages"></div>
             
-            <button onclick="closeViewModal()" class="absolute top-3 right-3 md:hidden w-8 h-8 bg-black/60 text-white rounded flex items-center justify-center z-10 backdrop-blur-sm">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+            <!-- Mobile Actions (Delete & Close) -->
+            <div class="absolute top-3 right-3 md:hidden flex gap-2 z-10">
+                 <button id="btnDeletePostMobile" class="w-8 h-8 bg-black/60 text-white rounded flex items-center justify-center backdrop-blur-sm hover:bg-red-500 transition-colors">
+                    <i class="fa-solid fa-trash-can text-xs"></i>
+                </button>
+                <button onclick="closeViewModal()" class="w-8 h-8 bg-black/60 text-white rounded flex items-center justify-center backdrop-blur-sm hover:bg-slate-700 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
         </div>
         
         <!-- Content Section -->
@@ -412,14 +394,14 @@
 </dialog>
 
 <!-- Full Screen Slider -->
-<div id="imageSlider" class="fixed inset-0 z-[100] bg-black/95 flex flex-col items-center justify-center slider-hidden transition-all duration-200">
-    <button onclick="closeImageSlider()" class="absolute top-6 right-6 text-slate-400 hover:text-white w-10 h-10 flex items-center justify-center transition-colors">
+<div id="imageSlider" class="fixed inset-0 z-[100] bg-black/95 flex flex-col items-center justify-center slider-hidden transition-all duration-200" onclick="if(event.target === this) closeImageSlider()">
+    <button onclick="closeImageSlider()" class="absolute top-6 right-6 text-slate-400 hover:text-white w-10 h-10 flex items-center justify-center transition-colors z-[120] bg-black/20 rounded-full backdrop-blur-sm">
         <i class="fa-solid fa-xmark text-2xl"></i>
     </button>
     <div class="relative w-full h-full flex items-center justify-center p-4">
-        <button onclick="changeSlide(-1)" class="absolute left-4 text-slate-400 hover:text-white w-12 h-12 hidden sm:flex items-center justify-center transition-all"><i class="fa-solid fa-chevron-left text-3xl"></i></button>
-        <img id="sliderMainImage" src="" class="max-w-full max-h-[85vh] object-contain shadow-2xl border border-slate-800">
-        <button onclick="changeSlide(1)" class="absolute right-4 text-slate-400 hover:text-white w-12 h-12 hidden sm:flex items-center justify-center transition-all"><i class="fa-solid fa-chevron-right text-3xl"></i></button>
+        <button onclick="changeSlide(-1)" class="absolute left-4 text-slate-400 hover:text-white w-12 h-12 hidden sm:flex items-center justify-center transition-all z-[110]"><i class="fa-solid fa-chevron-left text-3xl"></i></button>
+        <img id="sliderMainImage" src="" class="max-w-full max-h-[85vh] object-contain shadow-2xl border border-slate-800 pointer-events-none">
+        <button onclick="changeSlide(1)" class="absolute right-4 text-slate-400 hover:text-white w-12 h-12 hidden sm:flex items-center justify-center transition-all z-[110]"><i class="fa-solid fa-chevron-right text-3xl"></i></button>
     </div>
     <div class="absolute bottom-8 flex flex-col items-center gap-4 z-[110]">
         <span id="sliderCounter" class="text-slate-400 text-xs font-mono tracking-widest">1 / 1</span>
@@ -464,8 +446,7 @@ const dom = {
     sliderImg: document.getElementById('sliderMainImage'),
     sliderCount: document.getElementById('sliderCounter'),
     viewHero: document.getElementById('viewHeroImg'),
-    viewDate: document.getElementById('viewPublishDate'),
-    countTutors: document.getElementById('countTutors')
+    viewDate: document.getElementById('viewPublishDate')
 };
 
 function handleImgError(img) { 
@@ -509,7 +490,6 @@ async function loadPosts() {
             });
             return { ...p, images: imgs };
         }).reverse();
-        dom.countTutors.textContent = posts.length;
     } catch (e) { 
         posts = []; 
         Swal.fire({
@@ -641,7 +621,11 @@ function viewDetail(id) {
         });
     }
 
-    document.getElementById('btnDeletePost').onclick = (e) => { e.stopPropagation(); confirmDelete(p.id); };
+    // Bind Delete Events (Desktop & Mobile)
+    const deleteAction = (e) => { e.stopPropagation(); confirmDelete(p.id); };
+    if(document.getElementById('btnDeletePost')) document.getElementById('btnDeletePost').onclick = deleteAction;
+    if(document.getElementById('btnDeletePostMobile')) document.getElementById('btnDeletePostMobile').onclick = deleteAction;
+
     dom.viewDlg.showModal();
     setScrollLock(true);
 }
