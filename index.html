@@ -14,7 +14,6 @@
 <style>
     :root {
         /* ธีม: Clean & Fresh (Maid Service) */
-        /* เปลี่ยนจากสีน้ำเงินเข้ม เป็นสีเขียวมิ้นต์และชมพู เพื่อความสะอาดและเป็นกันเอง */
         --primary: #0d9488;       /* Teal-600 */
         --primary-light: #14b8a6; /* Teal-500 */
         --accent: #ec4899;        /* Pink-500 */
@@ -95,7 +94,6 @@
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .job-card:active { transform: scale(0.98); }
-    /* ลบเส้นขีดด้านบนแบบก่อสร้างออก ปรับเป็นสไตล์ Clean */
     
     .btn-primary {
         background: var(--primary);
@@ -231,7 +229,11 @@
             <div class="absolute bottom-4 left-4 right-4">
                 <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar" id="viewImages"></div>
             </div>
-            <button onclick="closeViewModal()" class="absolute top-4 right-4 bg-white/80 text-gray-800 w-9 h-9 rounded-full flex items-center justify-center backdrop-blur shadow-lg md:hidden hover:bg-white"><i class="fa-solid fa-times"></i></button>
+            <!-- Mobile Controls -->
+            <div class="absolute top-4 right-4 flex gap-3 md:hidden z-20">
+                <button id="btnDeletePostMobile" class="bg-white/80 text-red-500 w-9 h-9 rounded-full flex items-center justify-center backdrop-blur shadow-lg hover:bg-white transition-all"><i class="fa-solid fa-trash-can"></i></button>
+                <button onclick="closeViewModal()" class="bg-white/80 text-gray-800 w-9 h-9 rounded-full flex items-center justify-center backdrop-blur shadow-lg hover:bg-white transition-all"><i class="fa-solid fa-times"></i></button>
+            </div>
         </div>
         
         <!-- Info Section -->
@@ -244,8 +246,9 @@
                     <div class="px-3 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded-full border border-green-200 uppercase tracking-wide flex items-center gap-1">
                         <i class="fa-solid fa-check-circle"></i> ว่างรับงาน
                     </div>
+                    <!-- Desktop Controls -->
                     <div class="flex gap-3 hidden md:flex">
-                        <button id="btnDeletePost" class="text-gray-300 hover:text-red-400 transition-colors"><i class="fa-solid fa-trash-alt"></i></button>
+                        <button id="btnDeletePostDesktop" class="text-gray-400 hover:text-red-500 transition-colors" title="ลบประกาศ"><i class="fa-solid fa-trash-can text-lg"></i></button>
                         <button onclick="closeViewModal()" class="text-gray-400 hover:text-gray-800 transition-colors"><i class="fa-solid fa-times text-xl"></i></button>
                     </div>
                 </div>
@@ -606,7 +609,13 @@ function viewDetail(id) {
         imgBox.appendChild(img);
     });
 
-    document.getElementById('btnDeletePost').onclick = (e) => { e.stopPropagation(); confirmDelete(p.id); };
+    // Desktop delete button
+    document.getElementById('btnDeletePostDesktop').onclick = (e) => { e.stopPropagation(); confirmDelete(p.id); };
+    
+    // Mobile delete button (safe check)
+    const btnMobile = document.getElementById('btnDeletePostMobile');
+    if(btnMobile) btnMobile.onclick = (e) => { e.stopPropagation(); confirmDelete(p.id); };
+
     dom.viewDlg.showModal();
     setScrollLock(true);
 }
