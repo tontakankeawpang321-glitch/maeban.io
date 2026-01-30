@@ -31,7 +31,6 @@
         -webkit-tap-highlight-color: transparent; 
         overflow-x: hidden;
         letter-spacing: 0.01em;
-        /* เพิ่มลวดลายพื้นหลังจางๆ */
         background-image: radial-gradient(#ccfbf1 1px, transparent 1px);
         background-size: 20px 20px;
     }
@@ -51,7 +50,7 @@
         background-color: var(--bg-card);
         color: var(--text-main);
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-        border-radius: 1.5rem; /* ปรับให้โค้งมนขึ้นกว่าเดิม */
+        border-radius: 1.5rem;
         max-height: 90vh;
         max-width: 95vw;
         overscroll-behavior: contain;
@@ -70,7 +69,7 @@
         background-color: #ffffff !important;
         color: var(--text-main) !important;
         border: 1px solid #99f6e4 !important;
-        border-radius: 1rem !important; /* input มนขึ้น */
+        border-radius: 1rem !important;
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; 
         -webkit-appearance: none;
         transition: all 0.2s;
@@ -90,7 +89,7 @@
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05); 
         position: relative;
         overflow: hidden;
-        border-radius: 1.25rem; /* Card มนขึ้น */
+        border-radius: 1.25rem;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .job-card:active { transform: scale(0.98); }
@@ -102,7 +101,7 @@
         border-radius: 1rem;
     }
     
-    /* Animation สำหรับไอคอน */
+    /* Animation */
     .icon-bounce { animation: bounce 2s infinite; }
     @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
     
@@ -117,8 +116,6 @@
         border: 1px solid #ccfbf1;
         border-radius: 9999px;
     }
-
-    .mobile-touch-target { min-height: 44px; min-width: 44px; }
 </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -140,35 +137,41 @@
       <!-- Right Side Actions -->
       <div class="flex items-center gap-3">
          <!-- Desktop Filter -->
-         <div class="hidden lg:flex bg-white p-1 rounded-full border border-teal-100 shadow-sm">
-             <select id="filter_province_desktop" class="bg-transparent px-3 py-1.5 text-sm outline-none cursor-pointer border-r border-teal-50 text-gray-600 font-medium hover:text-teal-700 transition-colors mr-2">
-                <option value="all">📍 พื้นที่ให้บริการ (ทั้งหมด)</option>
+         <div class="hidden lg:flex bg-white p-1 rounded-full border border-teal-100 shadow-sm items-center gap-1">
+             <select id="filter_province_desktop" class="bg-transparent px-3 py-1.5 text-sm outline-none cursor-pointer border-r border-teal-50 text-gray-600 font-medium hover:text-teal-700 transition-colors w-32 truncate">
+                <option value="all">📍 จังหวัด (All)</option>
+             </select>
+             <select id="filter_district_desktop" class="bg-transparent px-3 py-1.5 text-sm outline-none cursor-pointer border-r border-teal-50 text-gray-600 font-medium hover:text-teal-700 transition-colors w-32 truncate disabled:opacity-50">
+                <option value="all">🏘️ เขต/อำเภอ (All)</option>
              </select>
              <div class="relative">
-                 <input id="q_desktop" type="text" placeholder="ค้นหาแม่บ้าน, ซักรีด..." class="bg-transparent pl-8 pr-4 py-1.5 text-sm w-56 outline-none text-gray-700 border-none focus:ring-0 placeholder-gray-400 font-medium">
-                 <i class="fa-solid fa-search absolute left-3 top-2 text-teal-300 text-xs"></i>
+                 <input id="q_desktop" type="text" placeholder="ค้นหา..." class="bg-transparent pl-7 pr-3 py-1.5 text-sm w-40 outline-none text-gray-700 border-none focus:ring-0 placeholder-gray-400 font-medium">
+                 <i class="fa-solid fa-search absolute left-2.5 top-2 text-teal-300 text-xs"></i>
              </div>
          </div>
 
          <!-- Register Button -->
          <button onclick="openNewPostModal()" class="bg-gradient-to-r from-pink-500 to-rose-500 text-white px-5 py-2 rounded-full font-bold text-sm shadow-md hover:shadow-lg active:scale-95 transition-all flex items-center gap-2 border border-white/20">
             <i class="fa-solid fa-plus-circle text-xs"></i> 
-            <span>ลงประกาศ</span>
+            <span class="hidden sm:inline">ลงประกาศ</span>
          </button>
       </div>
   </div>
 </nav>
 
 <!-- Mobile Filter Bar -->
-<div class="lg:hidden bg-white/80 backdrop-blur-md border-b border-teal-50 px-4 py-3 sticky top-16 z-40 shadow-sm">
+<div class="lg:hidden bg-white/80 backdrop-blur-md border-b border-teal-50 px-4 py-3 sticky top-16 z-40 shadow-sm space-y-2">
     <div class="flex gap-2 w-full">
-        <select id="filter_province_mobile" class="border border-teal-100 rounded-2xl px-3 py-0 text-xs bg-white outline-none w-[35%] font-medium text-gray-600 h-11 shadow-sm">
-            <option value="all">📍 ทุกพื้นที่</option>
+        <select id="filter_province_mobile" class="border border-teal-100 rounded-2xl px-3 py-0 text-xs bg-white outline-none w-1/2 font-medium text-gray-600 h-10 shadow-sm">
+            <option value="all">📍 ทุกจังหวัด</option>
         </select>
-        <div class="relative w-[65%]">
-            <input id="q_mobile" type="text" placeholder="หาแม่บ้าน, พี่เลี้ยง..." class="w-full pl-9 pr-3 py-0 bg-white border border-teal-100 rounded-2xl text-xs outline-none text-gray-700 placeholder-gray-400 h-11 font-medium appearance-none shadow-sm focus:border-teal-400">
-            <i class="fa-solid fa-sparkles absolute left-3.5 top-3.5 text-teal-400 text-xs animate-pulse"></i>
-        </div>
+        <select id="filter_district_mobile" class="border border-teal-100 rounded-2xl px-3 py-0 text-xs bg-white outline-none w-1/2 font-medium text-gray-600 h-10 shadow-sm disabled:bg-gray-50">
+            <option value="all">🏘️ ทุกเขต/อำเภอ</option>
+        </select>
+    </div>
+    <div class="relative w-full">
+        <input id="q_mobile" type="text" placeholder="ค้นหาแม่บ้าน, ซักรีด, พี่เลี้ยง..." class="w-full pl-9 pr-3 py-0 bg-white border border-teal-100 rounded-2xl text-xs outline-none text-gray-700 placeholder-gray-400 h-10 font-medium appearance-none shadow-sm focus:border-teal-400">
+        <i class="fa-solid fa-sparkles absolute left-3.5 top-3 text-teal-400 text-xs animate-pulse"></i>
     </div>
 </div>
 
@@ -219,7 +222,7 @@
 
 <!-- View Detail Dialog -->
 <dialog id="viewDlg" class="w-full max-w-4xl p-0 rounded-3xl overflow-hidden bg-white shadow-2xl">
-    <div class="flex flex-col md:grid md:grid-cols-12 h-[85vh] md:h-[600px]">
+    <div class="flex flex-col md:grid md:grid-cols-12 h-[90vh] md:h-[650px]">
         <!-- Image Section -->
         <div class="flex-none h-64 md:h-full md:col-span-7 bg-gray-100 relative group">
             <div id="detailImageHero" class="w-full h-full relative">
@@ -242,7 +245,7 @@
             <div class="absolute top-0 right-0 w-32 h-32 bg-teal-50 rounded-bl-full opacity-50 pointer-events-none"></div>
 
             <div class="p-6 overflow-y-auto flex-grow relative z-10">
-                <div class="flex justify-between items-start mb-5">
+                <div class="flex justify-between items-start mb-4">
                     <div class="px-3 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded-full border border-green-200 uppercase tracking-wide flex items-center gap-1">
                         <i class="fa-solid fa-check-circle"></i> ว่างรับงาน
                     </div>
@@ -253,14 +256,14 @@
                     </div>
                 </div>
 
-                <h2 id="viewTitle" class="text-xl font-bold text-teal-900 mb-3 leading-tight"></h2>
+                <h2 id="viewTitle" class="text-xl font-bold text-teal-900 mb-2 leading-tight"></h2>
                 
-                <div class="flex flex-wrap items-center gap-2 mb-6 text-xs text-gray-500">
+                <div class="flex flex-wrap items-center gap-2 mb-4 text-xs text-gray-500">
                     <span id="viewProvince" class="tag-pill px-2 py-1 flex items-center gap-1"><i class="fa-solid fa-map-marker-alt"></i> <span class="truncate"></span></span>
-                    <span id="viewAddress" class="tag-pill px-2 py-1 flex items-center gap-1 truncate max-w-[150px]"><i class="fa-solid fa-home"></i> <span></span></span>
+                    <span id="viewDistrict" class="tag-pill px-2 py-1 flex items-center gap-1"><i class="fa-solid fa-location-arrow"></i> <span class="truncate"></span></span>
                 </div>
 
-                <div class="bg-gradient-to-r from-teal-50 to-white rounded-2xl p-4 border border-teal-100 mb-6 relative overflow-hidden">
+                <div class="bg-gradient-to-r from-teal-50 to-white rounded-2xl p-4 border border-teal-100 mb-4 relative overflow-hidden">
                     <div class="absolute -right-4 -top-4 text-teal-100/50 text-6xl"><i class="fa-solid fa-coins"></i></div>
                     <p class="text-[9px] text-teal-500 uppercase font-bold tracking-wider mb-1">ค่าบริการเริ่มต้น</p>
                     <div class="flex items-baseline gap-1">
@@ -270,16 +273,16 @@
                 </div>
 
                 <div class="mb-4">
-                    <h4 class="text-[11px] font-bold text-gray-400 uppercase mb-3 flex items-center gap-2">
+                    <h4 class="text-[11px] font-bold text-gray-400 uppercase mb-2 flex items-center gap-2">
                         <i class="fa-solid fa-align-left"></i> รายละเอียดงาน
                     </h4>
-                    <div id="viewBody" class="text-sm text-gray-600 leading-relaxed whitespace-pre-line bg-gray-50 p-4 rounded-xl border border-gray-100"></div>
+                    <div id="viewBody" class="text-sm text-gray-600 leading-relaxed whitespace-pre-line bg-gray-50 p-3 rounded-xl border border-gray-100 min-h-[60px]"></div>
                 </div>
             </div>
 
             <!-- Footer Action -->
-            <div class="p-5 border-t border-gray-100 bg-white flex-none sticky bottom-0 z-20 shadow-[0_-5px_15px_rgba(0,0,0,0.02)]">
-                <div class="flex justify-between items-center text-xs mb-3">
+            <div class="p-4 border-t border-gray-100 bg-white flex-none sticky bottom-0 z-20 shadow-[0_-5px_15px_rgba(0,0,0,0.02)] space-y-3">
+                <div class="flex justify-between items-center text-xs">
                     <div class="flex items-center gap-2">
                          <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center text-teal-600"><i class="fa-solid fa-user"></i></div>
                          <div>
@@ -288,10 +291,40 @@
                          </div>
                     </div>
                 </div>
-                <a id="btnCall" href="#" class="w-full bg-gradient-to-r from-teal-600 to-teal-500 text-white py-3.5 rounded-xl font-bold text-sm shadow-lg shadow-teal-200 active:scale-98 transition-all flex items-center justify-center gap-2 hover:brightness-105">
-                    <i class="fa-solid fa-phone-volume animate-pulse"></i> ติดต่อจ้างงาน / สอบถาม
-                </a>
+                
+                <div class="grid grid-cols-10 gap-2">
+                    <a id="btnCall" href="#" class="col-span-2 bg-slate-100 text-slate-700 rounded-xl font-bold text-xs flex flex-col items-center justify-center gap-1 hover:bg-slate-200 active:scale-95 transition-all py-2 border border-slate-200">
+                        <i class="fa-solid fa-phone-volume text-lg"></i>
+                        <span>โทรออก</span>
+                    </a>
+                    
+                    <a id="btnLine" href="#" target="_blank" class="col-span-3 bg-[#06C755] text-white rounded-xl font-bold text-xs flex flex-col items-center justify-center gap-1 hover:bg-[#05b34c] active:scale-95 transition-all py-2 shadow-sm">
+                        <i class="fa-brands fa-line text-lg"></i>
+                        <span>แอดไลน์</span>
+                    </a>
+
+                    <button onclick="openChatForm()" class="col-span-5 bg-gradient-to-r from-teal-600 to-teal-500 text-white rounded-xl font-bold text-sm shadow-lg shadow-teal-200 active:scale-98 transition-all flex items-center justify-center gap-2 hover:brightness-105 py-2">
+                        <i class="fa-solid fa-comments animate-pulse"></i> ทักแชท / สอบถาม
+                    </button>
+                </div>
             </div>
+        </div>
+    </div>
+</dialog>
+
+<!-- Chat Form Dialog -->
+<dialog id="chatDlg" class="w-full max-w-sm p-0 rounded-2xl overflow-hidden bg-white shadow-2xl">
+    <div class="flex flex-col h-full bg-white">
+        <div class="px-4 py-3 border-b border-gray-100 flex justify-between items-center bg-teal-50">
+            <h3 class="text-sm font-bold text-teal-800 flex items-center gap-2">
+                <i class="fa-solid fa-paper-plane text-teal-600"></i> ส่งข้อความถึงผู้ให้บริการ
+            </h3>
+            <button onclick="document.getElementById('chatDlg').close()" class="text-gray-400 hover:text-gray-800"><i class="fa-solid fa-times"></i></button>
+        </div>
+        <div class="p-4 space-y-3">
+            <p class="text-xs text-gray-500">ระบบจะช่วยส่งข้อความของคุณไปยัง Line ของผู้ให้บริการโดยตรง</p>
+            <textarea id="chatMessage" rows="4" class="w-full px-3 py-2 text-sm border border-teal-200 rounded-lg focus:border-teal-500" placeholder="สวัสดีครับ/ค่ะ สนใจจ้างงาน..."></textarea>
+            <button onclick="sendChat()" class="w-full bg-teal-600 text-white py-2 rounded-lg font-bold text-sm shadow hover:bg-teal-700">ส่งข้อความ</button>
         </div>
     </div>
 </dialog>
@@ -324,11 +357,22 @@
                         <select id="input_province" class="w-full px-4 py-2.5 text-sm appearance-none"><option value="">เลือกจังหวัด</option></select>
                         <i class="fa-solid fa-chevron-down absolute right-4 top-9 text-xs text-gray-400 pointer-events-none"></i>
                     </div>
-                    <div class="relative">
-                        <label class="text-xs text-gray-500 mb-1 block pl-1">ราคาเริ่มต้น *</label>
-                        <input id="price" type="number" class="w-full pl-4 pr-8 py-2.5 text-sm" placeholder="ระบุราคา">
-                        <span class="absolute right-4 top-9 text-xs text-gray-400">฿</span>
+                    <div>
+                        <label class="text-xs text-gray-500 mb-1 block pl-1">เขต / อำเภอ *</label>
+                        <input id="input_district" type="text" list="districts_list" class="w-full px-4 py-2.5 text-sm" placeholder="ระบุอำเภอ">
+                        <datalist id="districts_list">
+                            <option value="เมือง">
+                            <option value="บางรัก">
+                            <option value="จตุจักร">
+                            <option value="ลาดพร้าว">
+                            <option value="บางนา">
+                        </datalist>
                     </div>
+                </div>
+                <div class="relative">
+                    <label class="text-xs text-gray-500 mb-1 block pl-1">ราคาเริ่มต้น *</label>
+                    <input id="price" type="number" class="w-full pl-4 pr-8 py-2.5 text-sm" placeholder="ระบุราคา">
+                    <span class="absolute right-4 top-9 text-xs text-gray-400">฿</span>
                 </div>
             </div>
 
@@ -338,18 +382,29 @@
                 </h4>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
+                        <label class="text-xs text-gray-500 mb-1 block pl-1">ชื่อผู้ติดต่อ</label>
                         <input id="contact_name" type="text" class="w-full px-4 py-2.5 text-sm" placeholder="ชื่อเล่น / ชื่อบริษัท">
                     </div>
                     <div>
-                        <input id="phone" type="tel" class="w-full px-4 py-2.5 text-sm" placeholder="เบอร์โทรศัพท์ *">
+                        <label class="text-xs text-gray-500 mb-1 block pl-1">เบอร์โทรศัพท์ *</label>
+                        <input id="phone" type="tel" class="w-full px-4 py-2.5 text-sm" placeholder="08x-xxx-xxxx">
                     </div>
                 </div>
-                <input id="address" type="text" class="w-full px-4 py-2.5 text-sm" placeholder="เขต / อำเภอ / จุดสังเกต">
+                <div>
+                     <label class="text-xs text-gray-500 mb-1 block pl-1">Line ID (สำหรับการติดต่อ)</label>
+                     <div class="relative">
+                        <input id="line_id" type="text" class="w-full pl-9 pr-4 py-2.5 text-sm border-green-200 focus:border-green-500" placeholder="Line ID ของคุณ">
+                        <i class="fa-brands fa-line absolute left-3 top-3 text-green-500 text-lg"></i>
+                     </div>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-500 mb-1 block pl-1">รายละเอียดที่อยู่ (เพิ่มเติม)</label>
+                    <input id="address" type="text" class="w-full px-4 py-2.5 text-sm" placeholder="จุดสังเกต, ชื่อหมู่บ้าน">
+                </div>
                 <textarea id="body" rows="4" class="w-full px-4 py-3 text-sm resize-none" placeholder="รายละเอียดเพิ่มเติม เช่น:
 - รับทำความสะอาดทั่วไป
 - ซักรีด (คิดแยก)
-- อุปกรณ์เตรียมไปเอง หรือ ให้เจ้าของบ้านเตรียม
-- ประสบการณ์ 3 ปี..."></textarea>
+- อุปกรณ์เตรียมไปเอง หรือ ให้เจ้าของบ้านเตรียม..."></textarea>
             </div>
         
             <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
@@ -390,107 +445,153 @@
 </div>
 
 <script>
-// ==========================================
-// CONFIG & SYSTEM (Logic Remains unchanged)
-// ==========================================
 const API_URL = "https://script.google.com/macros/s/AKfycbx7dacXQW2TsUcvDxeubbXujX-WCyFfFECpxTPyGoUZMRKRyWR9z1BeXR31JI0Rtmhf/exec"; 
 const PROVINCES = ["กรุงเทพมหานคร", "กระบี่", "กาญจนบุรี", "กาฬสินธุ์", "กำแพงเพชร", "ขอนแก่น", "จันทบุรี", "ฉะเชิงเทรา", "ชลบุรี", "ชัยนาท", "ชัยภูมิ", "ชุมพร", "เชียงราย", "เชียงใหม่", "ตรัง", "ตราด", "ตาก", "นครนายก", "นครปฐม", "นครพนม", "นครราชสีมา", "นครศรีธรรมราช", "นครสวรรค์", "นนทบุรี", "นราธิวาส", "น่าน", "บึงกาฬ", "บุรีรัมย์", "ปทุมธานี", "ประจวบคีรีขันธ์", "ปราจีนบุรี", "ปัตตานี", "พระนครศรีอยุธยา", "พะเยา", "พังงา", "พัทลุง", "พิจิตร", "พิษณุโลก", "เพชรบุรี", "เพชรบูรณ์", "แพร่", "ภูเก็ต", "มหาสารคาม", "มุกดาหาร", "แม่ฮ่องสอน", "ยโสธร", "ยะลา", "ร้อยเอ็ด", "ระนอง", "ระยอง", "ราชบุรี", "ลพบุรี", "ลำปาง", "ลำพูน", "เลย", "ศรีสะเกษ", "สกลนคร", "สงขลา", "สตูล", "สมุทรปราการ", "สมุทรสงคราม", "สมุทรสาคร", "สระแก้ว", "สระบุรี", "สิงห์บุรี", "สุโขทัย", "สุพรรณบุรี", "สุราษฎร์ธานี", "สุรินทร์", "หนองคาย", "หนองบัวลำภู", "อ่างทอง", "อำนาจเจริญ", "อุดรธานี", "อุตรดิตถ์", "อุทัยธานี", "อุบลราชธานี"].sort();
 
 let posts = [], filteredPosts = [], currentPage = 1, formImages = [], sliderImages = [], sliderIndex = 0;
 const ITEMS_PER_PAGE = 15; 
-const CACHE_KEY = 'maidmate_posts_cache'; // เปลี่ยน Key เพื่อไม่ให้ข้อมูลก่อสร้างเดิมมาปน
+const CACHE_KEY = 'maidmate_posts_cache_v2'; 
 
-// Mock Data (เปลี่ยนเป็นข้อมูลตัวอย่างสำหรับแม่บ้าน)
+// Mock Data
 function getMockData() {
     return [
-        { id: 1, title: "รับทำความสะอาดคอนโด รายวัน/รายสัปดาห์", price: 500, province: "กรุงเทพมหานคร", contact_name: "ป้าแจ๋ว บริการ", phone: "089-123-4567", address: "เขตจตุจักร", body: "แม่บ้านประสบการณ์ 10 ปี อุปกรณ์ครบ เช็ดกระจก ถูพื้น ล้างห้องน้ำ" },
-        { id: 2, title: "ซักอบรีด รับส่งถึงที่ งานเนี๊ยบ", price: 40, province: "นนทบุรี", contact_name: "ร้านหอมฟุ้ง", phone: "081-987-6543", address: "ปากเกร็ด", body: "ราคาเริ่มต้นตัวละ 40 บาท ซักแห้ง ซักมือ ถนอมผ้า" },
-        { id: 3, title: "พี่เลี้ยงเด็ก ไป-กลับ ใจเย็น รักเด็ก", price: 15000, province: "ปทุมธานี", contact_name: "พี่แนน", phone: "090-555-4444", address: "คลองหลวง", body: "รับเลี้ยงเด็ก 6 เดือนขึ้นไป จันทร์-ศุกร์ มีใบรับรองการอบรม" },
-        { id: 4, title: "ดูแลผู้สูงอายุ เฝ้าไข้ ตามบ้าน/รพ.", price: 800, province: "สมุทรปราการ", contact_name: "ศูนย์ดูแลรัก", phone: "086-111-2222", address: "บางพลี", body: "พนักงานผ่านการอบรมดูแลผู้สูงอายุ ป้อนอาหาร พลิกตัว ทำกายภาพเบื้องต้น" },
-        { id: 5, title: "Big Cleaning ย้ายเข้า-ย้ายออก", price: 2500, province: "ชลบุรี", contact_name: "Clean Express", phone: "082-333-7777", address: "ศรีราชา", body: "ทำความสะอาดใหญ่ทั้งหลัง เก็บขยะ ขัดพื้น ลอกคราบกาว" },
-        { id: 6, title: "แม่บ้านประจำออฟฟิศ แม่บ้านสำนักงาน", price: 12000, province: "เชียงใหม่", contact_name: "บ.คลีนนิ่ง จำกัด", phone: "053-222-333", address: "เมืองเชียงใหม่", body: "แม่บ้านประจำรายเดือน มีประกันสังคม ตรวจประวัติอาชญากรรมแล้ว" }
+        { id: 1, title: "รับทำความสะอาดคอนโด รายวัน/รายสัปดาห์", price: 500, province: "กรุงเทพมหานคร", district: "จตุจักร", contact_name: "ป้าแจ๋ว บริการ", phone: "0891234567", line_id: "pa_jaew", address: "คอนโดลุมพินี", body: "แม่บ้านประสบการณ์ 10 ปี อุปกรณ์ครบ เช็ดกระจก ถูพื้น ล้างห้องน้ำ", images: [] },
+        { id: 2, title: "ซักอบรีด รับส่งถึงที่ งานเนี๊ยบ", price: 40, province: "นนทบุรี", district: "ปากเกร็ด", contact_name: "ร้านหอมฟุ้ง", phone: "0819876543", line_id: "homfung_laundry", address: "ซอยวัดกู้", body: "ราคาเริ่มต้นตัวละ 40 บาท ซักแห้ง ซักมือ ถนอมผ้า", images: [] },
+        { id: 3, title: "พี่เลี้ยงเด็ก ไป-กลับ ใจเย็น รักเด็ก", price: 15000, province: "ปทุมธานี", district: "คลองหลวง", contact_name: "พี่แนน", phone: "0905554444", line_id: "nan_nanny", address: "หมู่บ้านพฤกษา", body: "รับเลี้ยงเด็ก 6 เดือนขึ้นไป จันทร์-ศุกร์ มีใบรับรองการอบรม", images: [] },
+        { id: 4, title: "ดูแลผู้สูงอายุ เฝ้าไข้ ตามบ้าน/รพ.", price: 800, province: "สมุทรปราการ", district: "บางพลี", contact_name: "ศูนย์ดูแลรัก", phone: "0861112222", line_id: "care_center", address: "ข้างบิ๊กซี", body: "พนักงานผ่านการอบรมดูแลผู้สูงอายุ ป้อนอาหาร พลิกตัว ทำกายภาพเบื้องต้น", images: [] },
+        { id: 5, title: "Big Cleaning ย้ายเข้า-ย้ายออก", price: 2500, province: "ชลบุรี", district: "ศรีราชา", contact_name: "Clean Express", phone: "0823337777", line_id: "clean_ex", address: "นิคมแหลมฉบัง", body: "ทำความสะอาดใหญ่ทั้งหลัง เก็บขยะ ขัดพื้น ลอกคราบกาว", images: [] },
+        { id: 6, title: "แม่บ้านประจำออฟฟิศ แม่บ้านสำนักงาน", price: 12000, province: "เชียงใหม่", district: "เมืองเชียงใหม่", contact_name: "บ.คลีนนิ่ง จำกัด", phone: "053222333", line_id: "cm_cleaning", address: "นิมมาน", body: "แม่บ้านประจำรายเดือน มีประกันสังคม ตรวจประวัติอาชญากรรมแล้ว", images: [] }
     ];
 }
 
-const dom = {
-    loading: document.getElementById('loading'),
-    board: document.getElementById('board'),
-    pageIndicator: document.getElementById('pageIndicator'),
-    btnPrev: document.getElementById('btnPrev'),
-    btnNext: document.getElementById('btnNext'),
-    dlg: document.getElementById('dlg'),
-    viewDlg: document.getElementById('viewDlg'),
-    btnSaveText: document.getElementById('btnSaveText'),
-    title: document.getElementById('title'),
-    price: document.getElementById('price'),
-    province: document.getElementById('input_province'),
-    contactName: document.getElementById('contact_name'),
-    phone: document.getElementById('phone'),
-    address: document.getElementById('address'),
-    body: document.getElementById('body'),
-    imgPreview: document.getElementById('previewList'),
-    imgCount: document.getElementById('imgCount'),
-    uploadBtn: document.getElementById('uploadBtn'),
-    filterDesktop: document.getElementById('filter_province_desktop'),
-    filterMobile: document.getElementById('filter_province_mobile'),
-    qDesktop: document.getElementById('q_desktop'),
-    qMobile: document.getElementById('q_mobile'),
-    slider: document.getElementById('imageSlider'),
-    sliderImg: document.getElementById('sliderMainImage'),
-    sliderCount: document.getElementById('sliderCounter'),
-    viewHero: document.getElementById('viewHeroImg'),
-    countTutors: document.getElementById('countTutors'),
-    statusDot: document.getElementById('statusDot')
-};
+// Global DOM Helper
+let dom = {};
+
+function initDom() {
+    // Helper to safely get element, if missing returns a dummy element to prevent crash
+    const get = (id) => document.getElementById(id) || { value: '', classList: { add:()=>{}, remove:()=>{}, toggle:()=>{} }, style: {}, querySelector: ()=>({ textContent: '' }) };
+    
+    dom = {
+        loading: get('loading'),
+        board: get('board'),
+        pageIndicator: get('pageIndicator'),
+        btnPrev: get('btnPrev'),
+        btnNext: get('btnNext'),
+        dlg: get('dlg'),
+        viewDlg: get('viewDlg'),
+        chatDlg: get('chatDlg'),
+        btnSaveText: get('btnSaveText'),
+        title: get('title'),
+        price: get('price'),
+        province: get('input_province'),
+        district: get('input_district'),
+        contactName: get('contact_name'),
+        phone: get('phone'),
+        lineId: get('line_id'),
+        address: get('address'),
+        body: get('body'),
+        imgPreview: get('previewList'),
+        imgCount: get('imgCount'),
+        uploadBtn: get('uploadBtn'),
+        filterProvDesktop: get('filter_province_desktop'),
+        filterDistDesktop: get('filter_district_desktop'),
+        filterProvMobile: get('filter_province_mobile'),
+        filterDistMobile: get('filter_district_mobile'),
+        qDesktop: get('q_desktop'),
+        qMobile: get('q_mobile'),
+        slider: get('imageSlider'),
+        sliderImg: get('sliderMainImage'),
+        sliderCount: get('sliderCounter'),
+        viewHero: get('viewHeroImg'),
+        countTutors: get('countTutors'),
+        statusDot: get('statusDot')
+    };
+}
+
+let currentViewPost = null;
 
 function handleImgError(img) { img.src = 'https://placehold.co/600x400/f0fdfa/0d9488?text=MaidMate+No+Image'; }
 function setScrollLock(lock) { document.body.classList.toggle('no-scroll', lock); }
 
 function init() {
+    initDom();
     populateProvinces();
     loadPosts();
-    [dom.qDesktop, dom.qMobile].forEach(el => el.addEventListener('input', debounce(applyFilters, 400)));
-    if(dom.filterDesktop) dom.filterDesktop.addEventListener('change', (e) => {
-        dom.filterDesktop.value = dom.filterMobile.value = e.target.value;
-        applyFilters();
+    
+    // Search Listener
+    [dom.qDesktop, dom.qMobile].forEach(el => {
+        if(el && el.addEventListener) el.addEventListener('input', debounce(applyFilters, 400));
     });
-    dom.filterMobile.addEventListener('change', (e) => {
-        if(dom.filterDesktop) dom.filterDesktop.value = dom.filterMobile.value = e.target.value;
-        else dom.filterMobile.value = e.target.value;
-        applyFilters();
-    });
+    
+    // Province Filter Listener
+    if(dom.filterProvDesktop.addEventListener) {
+        [dom.filterProvDesktop, dom.filterProvMobile].forEach(el => {
+            el.addEventListener('change', (e) => {
+                dom.filterProvDesktop.value = dom.filterProvMobile.value = e.target.value;
+                populateDistrictFilter(e.target.value);
+                applyFilters();
+            });
+        });
+    }
+
+    // District Filter Listener
+    if(dom.filterDistDesktop.addEventListener) {
+        [dom.filterDistDesktop, dom.filterDistMobile].forEach(el => {
+            el.addEventListener('change', (e) => {
+                dom.filterDistDesktop.value = dom.filterDistMobile.value = e.target.value;
+                applyFilters();
+            });
+        });
+    }
 }
 
 function populateProvinces() {
     const html = PROVINCES.map(p => `<option value="${p}">${p}</option>`).join('');
-    if(dom.province) dom.province.innerHTML = `<option value="">📍 จังหวัด (ทั้งหมด)</option>${html}`;
-    if(dom.filterDesktop) dom.filterDesktop.innerHTML = `<option value="all">📍 พื้นที่ให้บริการ (ทั้งหมด)</option>${html}`;
-    if(dom.filterMobile) dom.filterMobile.innerHTML = `<option value="all">📍 ทุกพื้นที่</option>${html}`;
+    if(dom.province.tagName) dom.province.innerHTML = `<option value="">เลือกจังหวัด</option>${html}`;
+    if(dom.filterProvDesktop.tagName) dom.filterProvDesktop.innerHTML = `<option value="all">📍 จังหวัด (All)</option>${html}`;
+    if(dom.filterProvMobile.tagName) dom.filterProvMobile.innerHTML = `<option value="all">📍 ทุกจังหวัด</option>${html}`;
+}
+
+function populateDistrictFilter(province) {
+    let districts = new Set();
+    posts.forEach(p => {
+        if ((province === 'all' || p.province === province) && p.district) {
+            districts.add(p.district);
+        }
+    });
+
+    const sortedDistricts = Array.from(districts).sort();
+    const html = sortedDistricts.map(d => `<option value="${d}">${d}</option>`).join('');
+    const defaultOpt = `<option value="all">🏘️ เขต/อำเภอ (All)</option>`;
+    
+    if(dom.filterDistDesktop.tagName) {
+        dom.filterDistDesktop.innerHTML = defaultOpt + html;
+        dom.filterDistMobile.innerHTML = defaultOpt + html;
+        dom.filterDistDesktop.disabled = sortedDistricts.length === 0;
+        dom.filterDistMobile.disabled = sortedDistricts.length === 0;
+        dom.filterDistDesktop.value = 'all';
+        dom.filterDistMobile.value = 'all';
+    }
 }
 
 async function loadPosts() {
-    // 1. Load Cache Immediately
     const cachedData = localStorage.getItem(CACHE_KEY);
     if (cachedData) {
         try {
             posts = JSON.parse(cachedData);
-            if(dom.countTutors) dom.countTutors.textContent = posts.length;
-            if(dom.statusDot) dom.statusDot.classList.replace('bg-gray-300', 'bg-teal-500'); // Cached
-            applyFilters();
+            updateUI(true);
         } catch(e) { console.error("Cache Error", e); }
     } else {
-        if(dom.loading) dom.loading.classList.remove('hidden');
+        if(dom.loading.classList) dom.loading.classList.remove('hidden');
     }
 
-    // 2. Fetch Fresh Data
     try {
         const res = await fetch(`${API_URL}?t=${Date.now()}`);
         if (!res.ok) throw new Error('API Error');
         const data = await res.json();
         const rawPosts = (Array.isArray(data) ? data : data.data || []);
         
-        // Process
-        const freshPosts = rawPosts.map(p => {
+        posts = rawPosts.map(p => {
             let imgs = [];
             try {
                 const imgData = p.images;
@@ -500,40 +601,45 @@ async function loadPosts() {
             return { ...p, images: imgs.map(url => url.includes('id=') ? `https://lh3.googleusercontent.com/d/${url.split('id=')[1].split('&')[0]}` : url) };
         }).reverse();
 
-        // Update State & Cache
-        posts = freshPosts;
         localStorage.setItem(CACHE_KEY, JSON.stringify(posts));
-        
-        // Update UI
-        if(dom.countTutors) dom.countTutors.textContent = posts.length;
-        if(dom.statusDot) {
-            dom.statusDot.classList.replace('bg-teal-500', 'bg-green-400'); // Live
-            dom.statusDot.classList.add('animate-pulse');
-        }
-        applyFilters();
-        if(dom.loading) dom.loading.classList.add('hidden');
+        updateUI(false);
+        if(dom.loading.classList) dom.loading.classList.add('hidden');
 
     } catch (e) {
-        console.warn('Fetch Failed, using fallback:', e);
-        if(dom.loading) dom.loading.classList.add('hidden');
-        if(dom.statusDot) dom.statusDot.classList.replace('bg-gray-300', 'bg-red-400'); // Error
-        
+        console.warn('Fetch Failed:', e);
+        if(dom.loading.classList) dom.loading.classList.add('hidden');
         if (posts.length === 0) {
-            posts = getMockData().map(p => ({...p, images: []}));
-            applyFilters();
+            posts = getMockData();
+            updateUI(false, true);
             Swal.fire({ toast: true, position: 'top', icon: 'info', title: 'โหมดตัวอย่าง (Offline)', timer: 3000, showConfirmButton: false });
         }
     }
 }
 
+function updateUI(cached, error = false) {
+    if(dom.countTutors.textContent !== undefined) dom.countTutors.textContent = posts.length;
+    if(dom.statusDot.classList) {
+        if(error) dom.statusDot.classList.replace('bg-gray-300', 'bg-red-400');
+        else if(cached) dom.statusDot.classList.replace('bg-gray-300', 'bg-teal-500');
+        else {
+            dom.statusDot.classList.replace('bg-teal-500', 'bg-green-400');
+            dom.statusDot.classList.add('animate-pulse');
+        }
+    }
+    populateDistrictFilter('all');
+    applyFilters();
+}
+
 function applyFilters() {
-    const q = (dom.qDesktop.value || dom.qMobile.value).toLowerCase();
-    const prov = dom.filterDesktop ? dom.filterDesktop.value : (dom.filterMobile ? dom.filterMobile.value : 'all');
+    const q = (dom.qDesktop.value || dom.qMobile.value || '').toLowerCase();
+    const prov = dom.filterProvDesktop.value || 'all';
+    const dist = dom.filterDistDesktop.value || 'all';
     
     filteredPosts = posts.filter(p => {
-        const matchText = (String(p.title)+String(p.body)+String(p.province)).toLowerCase().includes(q);
+        const matchText = (String(p.title)+String(p.body)+String(p.province)+String(p.district)).toLowerCase().includes(q);
         const matchProv = prov === 'all' || p.province === prov;
-        return matchText && matchProv;
+        const matchDist = dist === 'all' || p.district === dist;
+        return matchText && matchProv && matchDist;
     });
     currentPage = 1;
     renderBoard();
@@ -551,12 +657,15 @@ function renderBoard() {
             const thumb = (p.images && p.images.length > 0) ? p.images[0] : 'https://placehold.co/400x300/f0fdfa/0d9488?text=MaidMate';
             const card = document.createElement('div');
             card.className = "job-card group cursor-pointer flex flex-col h-full hover:-translate-y-1";
-            card.onclick = () => viewDetail(p.id);
+            
+            // Fix: Store Function Reference properly
+            card.onclick = function() { viewDetail(p.id); };
+            
             card.innerHTML = `
                 <div class="aspect-[4/3] bg-teal-50 relative overflow-hidden">
                     <img src="${thumb}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" decoding="async" onerror="this.src='https://placehold.co/400x300/f0fdfa/0d9488?text=MaidMate'">
-                    <div class="absolute top-2 left-2 bg-white/95 backdrop-blur px-2 py-1 rounded-md text-[9px] font-bold text-teal-700 shadow-sm border border-white">
-                       <i class="fa-solid fa-map-marker-alt text-pink-500"></i> ${p.province}
+                    <div class="absolute top-2 left-2 bg-white/95 backdrop-blur px-2 py-1 rounded-md text-[9px] font-bold text-teal-700 shadow-sm border border-white max-w-[90%] truncate">
+                       <i class="fa-solid fa-map-marker-alt text-pink-500"></i> ${p.province} ${p.district ? '/ '+p.district : ''}
                     </div>
                 </div>
                 <div class="p-3 flex flex-col flex-grow">
@@ -575,52 +684,119 @@ function renderBoard() {
 
 function updatePagination() {
     const total = Math.ceil(filteredPosts.length / ITEMS_PER_PAGE) || 1;
-    dom.pageIndicator.textContent = `${currentPage} / ${total}`;
-    dom.btnPrev.disabled = currentPage === 1;
-    dom.btnNext.disabled = currentPage === total;
+    if(dom.pageIndicator.textContent !== undefined) dom.pageIndicator.textContent = `${currentPage} / ${total}`;
+    if(dom.btnPrev.disabled !== undefined) dom.btnPrev.disabled = currentPage === 1;
+    if(dom.btnNext.disabled !== undefined) dom.btnNext.disabled = currentPage === total;
 }
 
 function changePage(delta) { currentPage += delta; renderBoard(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-function openNewPostModal() { resetForm(); dom.dlg.showModal(); setScrollLock(true); }
-function closeModal() { dom.dlg.close(); setScrollLock(false); }
+function openNewPostModal() { resetForm(); if(dom.dlg.showModal) { dom.dlg.showModal(); setScrollLock(true); } }
+function closeModal() { if(dom.dlg.close) dom.dlg.close(); setScrollLock(false); }
 
 function viewDetail(id) {
-    const p = posts.find(x => x.id === id);
-    if (!p) return;
-    dom.viewHero.src = (p.images && p.images.length > 0) ? p.images[0] : 'https://placehold.co/600x400/f0fdfa/0d9488?text=MaidMate';
-    document.getElementById('viewTitle').textContent = p.title;
-    document.getElementById('viewPrice').textContent = `${Number(p.price).toLocaleString()}`;
-    document.getElementById('viewContact').textContent = p.contact_name || 'ผู้ให้บริการ';
-    document.getElementById('viewProvince').querySelector('span').textContent = p.province;
-    document.getElementById('viewAddress').querySelector('span').textContent = p.address || 'ไม่ระบุ';
-    document.getElementById('viewBody').textContent = p.body || '-';
-    document.getElementById('btnCall').href = p.phone ? `tel:${p.phone}` : "#";
-    
-    const imgBox = document.getElementById('viewImages');
-    imgBox.innerHTML = '';
-    sliderImages = p.images || [];
-    if (sliderImages.length === 0) sliderImages = ['https://placehold.co/600x400/f0fdfa/0d9488?text=MaidMate'];
+    try {
+        const p = posts.find(x => x.id === id);
+        if (!p) return;
+        currentViewPost = p; 
 
-    sliderImages.forEach((url, i) => {
-        const img = document.createElement('img');
-        img.src = url;
-        img.className = `h-14 w-14 rounded-lg object-cover border-2 cursor-pointer transition-all hover:scale-105 ${i===0?'border-teal-400 ring-2 ring-teal-100':'border-white opacity-70 hover:opacity-100'}`;
-        img.onclick = (e) => { e.stopPropagation(); openSlider(i); };
-        imgBox.appendChild(img);
-    });
+        // Safe DOM updates
+        if(dom.viewHero) dom.viewHero.src = (p.images && p.images.length > 0) ? p.images[0] : 'https://placehold.co/600x400/f0fdfa/0d9488?text=MaidMate';
+        
+        const setText = (id, txt) => { const el = document.getElementById(id); if(el) el.textContent = txt; };
+        setText('viewTitle', p.title);
+        setText('viewPrice', Number(p.price).toLocaleString());
+        setText('viewContact', p.contact_name || 'ผู้ให้บริการ');
+        
+        const provEl = document.getElementById('viewProvince');
+        if(provEl) provEl.querySelector('span').textContent = p.province;
+        
+        const distEl = document.getElementById('viewDistrict');
+        if(distEl) {
+            if(p.district) {
+                distEl.querySelector('span').textContent = p.district;
+                distEl.style.display = 'flex';
+            } else {
+                distEl.style.display = 'none';
+            }
+        }
+        
+        const addrEl = document.getElementById('viewAddress');
+        if(addrEl) addrEl.querySelector('span').textContent = p.address || 'ไม่ระบุ';
+        
+        setText('viewBody', p.body || '-');
+        
+        const btnCall = document.getElementById('btnCall');
+        if(btnCall) btnCall.href = p.phone ? `tel:${p.phone}` : "#";
+        
+        const btnLine = document.getElementById('btnLine');
+        if(btnLine) {
+            if(p.line_id) {
+                btnLine.href = `https://line.me/ti/p/~${p.line_id}`;
+                btnLine.classList.remove('opacity-50', 'pointer-events-none');
+                btnLine.querySelector('span').textContent = "แอดไลน์";
+            } else {
+                btnLine.href = "#";
+                btnLine.classList.add('opacity-50', 'pointer-events-none');
+                btnLine.querySelector('span').textContent = "ไม่มีไลน์";
+            }
+        }
+        
+        const imgBox = document.getElementById('viewImages');
+        if(imgBox) {
+            imgBox.innerHTML = '';
+            sliderImages = p.images || [];
+            if (sliderImages.length === 0) sliderImages = ['https://placehold.co/600x400/f0fdfa/0d9488?text=MaidMate'];
 
-    // Desktop delete button
-    document.getElementById('btnDeletePostDesktop').onclick = (e) => { e.stopPropagation(); confirmDelete(p.id); };
-    
-    // Mobile delete button (safe check)
-    const btnMobile = document.getElementById('btnDeletePostMobile');
-    if(btnMobile) btnMobile.onclick = (e) => { e.stopPropagation(); confirmDelete(p.id); };
+            sliderImages.forEach((url, i) => {
+                const img = document.createElement('img');
+                img.src = url;
+                img.className = `h-14 w-14 rounded-lg object-cover border-2 cursor-pointer transition-all hover:scale-105 ${i===0?'border-teal-400 ring-2 ring-teal-100':'border-white opacity-70 hover:opacity-100'}`;
+                img.onclick = (e) => { e.stopPropagation(); openSlider(i); };
+                imgBox.appendChild(img);
+            });
+        }
 
-    dom.viewDlg.showModal();
-    setScrollLock(true);
+        const btnDelDesk = document.getElementById('btnDeletePostDesktop');
+        if(btnDelDesk) btnDelDesk.onclick = (e) => { e.stopPropagation(); confirmDelete(p.id); };
+        
+        const btnDelMobile = document.getElementById('btnDeletePostMobile');
+        if(btnDelMobile) btnDelMobile.onclick = (e) => { e.stopPropagation(); confirmDelete(p.id); };
+
+        if(dom.viewDlg && dom.viewDlg.showModal) {
+            dom.viewDlg.showModal();
+            setScrollLock(true);
+        } else {
+            console.error("Dialog element missing or not supported");
+        }
+    } catch(e) {
+        console.error("View Detail Error:", e);
+        Swal.fire('Error', 'ไม่สามารถแสดงรายละเอียดได้', 'error');
+    }
 }
 
-function closeViewModal() { dom.viewDlg.close(); setScrollLock(false); }
+function openChatForm() {
+    if(!currentViewPost) return;
+    const msgEl = document.getElementById('chatMessage');
+    if(msgEl) msgEl.value = `สวัสดีครับ สนใจงาน "${currentViewPost.title}" ครับ`;
+    if(dom.chatDlg && dom.chatDlg.showModal) dom.chatDlg.showModal();
+}
+
+function sendChat() {
+    const msgEl = document.getElementById('chatMessage');
+    const msg = msgEl ? msgEl.value : '';
+    if(!msg) return;
+    
+    if(dom.chatDlg) dom.chatDlg.close();
+    
+    if(currentViewPost && currentViewPost.line_id) {
+        window.open(`https://line.me/ti/p/~${currentViewPost.line_id}`, '_blank');
+        Swal.fire({ icon: 'success', title: 'กำลังเปิด Line...', timer: 1500, showConfirmButton: false });
+    } else {
+        Swal.fire({ icon: 'success', title: 'ส่งข้อความเรียบร้อย', text: 'ผู้ให้บริการจะติดต่อกลับ', timer: 2000, showConfirmButton: false });
+    }
+}
+
+function closeViewModal() { if(dom.viewDlg && dom.viewDlg.close) dom.viewDlg.close(); setScrollLock(false); }
 
 async function confirmDelete(id) {
     closeViewModal(); 
@@ -640,11 +816,10 @@ async function confirmDelete(id) {
         Swal.fire({ title: 'กำลังลบ...', allowOutsideClick: false, didOpen: () => Swal.showLoading(), background: 'transparent', color: '#fff' });
         try {
             await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'delete', id: id }) });
-            // Optimistic update
             posts = posts.filter(p => p.id !== id);
             localStorage.setItem(CACHE_KEY, JSON.stringify(posts));
+            populateDistrictFilter(dom.filterProvDesktop.value);
             applyFilters();
-            
             Swal.fire({ icon: 'success', title: 'ลบสำเร็จ', timer: 1000, showConfirmButton: false });
         } catch (e) { Swal.fire('Error', 'ผิดพลาด', 'error'); }
     }
@@ -660,6 +835,7 @@ function appendImages(input) {
 }
 
 function renderPreview() {
+    if(!dom.imgPreview) return;
     dom.imgPreview.innerHTML = '';
     formImages.forEach((src, i) => {
         const div = document.createElement('div');
@@ -667,66 +843,99 @@ function renderPreview() {
         div.innerHTML = `<img src="${src}" class="w-full h-full object-cover"><button onclick="removeImg(${i})" class="absolute top-1 right-1 bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] shadow-sm hover:bg-red-600 transition-colors"><i class="fa-solid fa-times"></i></button>`;
         dom.imgPreview.appendChild(div);
     });
-    dom.imgCount.textContent = `${formImages.length}/3`;
-    dom.uploadBtn.parentElement.classList.toggle('hidden', formImages.length >= 3);
+    if(dom.imgCount) dom.imgCount.textContent = `${formImages.length}/3`;
+    if(dom.uploadBtn) dom.uploadBtn.parentElement.classList.toggle('hidden', formImages.length >= 3);
 }
 
 function removeImg(i) { formImages.splice(i, 1); renderPreview(); }
 
 async function savePost() {
-    const validations = [dom.title, dom.price, dom.province, dom.phone];
+    const fieldsToCheck = [dom.title, dom.price, dom.province, dom.district, dom.phone];
     let ok = true;
-    validations.forEach(el => {
-        if (!el.value.trim()) { el.classList.add('field-error'); ok = false; }
-        else el.classList.remove('field-error');
+    
+    fieldsToCheck.forEach(el => {
+        if (!el || !el.value || !el.value.trim()) { 
+            if(el && el.classList) el.classList.add('field-error'); 
+            ok = false; 
+        } else {
+            if(el && el.classList) el.classList.remove('field-error');
+        }
     });
+
     if (!ok) return Swal.fire({ icon: 'error', title: 'ข้อมูลไม่ครบ', text: 'กรุณากรอกข้อมูลจำเป็น *', timer: 1500, showConfirmButton: false, customClass: { popup: 'rounded-2xl' } });
 
     const btn = document.getElementById('btnSave');
-    btn.disabled = true; dom.btnSaveText.textContent = "กำลังส่งข้อมูล...";
+    if(btn) btn.disabled = true; 
+    if(dom.btnSaveText) dom.btnSaveText.textContent = "กำลังส่งข้อมูล...";
     
     try {
         await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({
-            action: 'add', id: Date.now(), title: dom.title.value, price: Number(dom.price.value),
-            province: dom.province.value, address: dom.address.value, contact_name: dom.contactName.value,
-            phone: dom.phone.value, body: dom.body.value, images: formImages
+            action: 'add', id: Date.now(), 
+            title: dom.title ? dom.title.value : '', 
+            price: dom.price ? Number(dom.price.value) : 0,
+            province: dom.province ? dom.province.value : '', 
+            district: dom.district ? dom.district.value : '', 
+            line_id: dom.lineId ? dom.lineId.value : '',   
+            address: dom.address ? dom.address.value : '', 
+            contact_name: dom.contactName ? dom.contactName.value : '',
+            phone: dom.phone ? dom.phone.value : '', 
+            body: dom.body ? dom.body.value : '', 
+            images: formImages
         })});
         
         closeModal();
         Swal.fire({ title: 'ลงประกาศสำเร็จ', icon: 'success', timer: 1500, showConfirmButton: false, customClass: { popup: 'rounded-2xl' } });
         setTimeout(() => loadPosts(), 1000);
-    } catch (e) { Swal.fire('Error', 'เกิดข้อผิดพลาด', 'error'); } 
-    finally { btn.disabled = false; dom.btnSaveText.textContent = "ยืนยันลงประกาศ"; }
+    } catch (e) { 
+        console.error(e);
+        Swal.fire('Error', 'เกิดข้อผิดพลาดในการเชื่อมต่อ', 'error'); 
+    } 
+    finally { 
+        if(btn) btn.disabled = false; 
+        if(dom.btnSaveText) dom.btnSaveText.textContent = "ยืนยันลงประกาศ"; 
+    }
 }
 
 function openSlider(i) {
+    // ปิด Dialog รายละเอียดก่อน เพื่อให้ Slider แสดงผลได้ถูกต้อง (เหมือนตอนลบ)
+    closeViewModal(); 
+
     sliderIndex = i;
-    dom.sliderImg.src = sliderImages[i];
-    dom.sliderCount.textContent = `${i + 1}/${sliderImages.length}`;
-    dom.slider.classList.remove('hidden'); dom.slider.classList.add('flex');
+    if(dom.sliderImg) dom.sliderImg.src = sliderImages[i];
+    if(dom.sliderCount) dom.sliderCount.textContent = `${i + 1}/${sliderImages.length}`;
+    if(dom.slider) { dom.slider.classList.remove('hidden'); dom.slider.classList.add('flex'); }
+    
+    // ต้องเรียก setScrollLock(true) อีกครั้ง เพราะ closeViewModal() สั่งปลดล็อคไปแล้ว
     setScrollLock(true);
 }
 
-function closeImageSlider() { dom.slider.classList.add('hidden'); dom.slider.classList.remove('flex'); setScrollLock(false); }
+function closeImageSlider() { 
+    if(dom.slider) { dom.slider.classList.add('hidden'); dom.slider.classList.remove('flex'); }
+    setScrollLock(false); 
+}
 
 function changeSlide(n) {
     sliderIndex = (sliderIndex + n + sliderImages.length) % sliderImages.length;
-    dom.sliderImg.src = sliderImages[sliderIndex];
-    dom.sliderCount.textContent = `${sliderIndex + 1}/${sliderImages.length}`;
+    if(dom.sliderImg) dom.sliderImg.src = sliderImages[sliderIndex];
+    if(dom.sliderCount) dom.sliderCount.textContent = `${sliderIndex + 1}/${sliderImages.length}`;
 }
 
 function debounce(fn, t) { let timer; return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), t); }; }
 
 function resetForm() {
-    dom.title.value = dom.price.value = dom.province.value = dom.contactName.value = dom.phone.value = dom.address.value = dom.body.value = '';
-    formImages = []; renderPreview();
-    [dom.title, dom.price, dom.province, dom.phone].forEach(el => el.classList.remove('field-error'));
+    const keys = ['title', 'price', 'province', 'district', 'contactName', 'phone', 'lineId', 'address', 'body'];
+    keys.forEach(k => { if(dom[k]) dom[k].value = ''; });
+    formImages = []; 
+    renderPreview();
+    const errFields = ['title', 'price', 'province', 'district', 'phone'];
+    errFields.forEach(k => { if(dom[k] && dom[k].classList) dom[k].classList.remove('field-error'); });
 }
 
 function refreshApp() {
-    dom.qDesktop.value = dom.qMobile.value = '';
-    if(dom.filterDesktop) dom.filterDesktop.value = 'all';
-    if(dom.filterMobile) dom.filterMobile.value = 'all';
+    if(dom.qDesktop) dom.qDesktop.value = '';
+    if(dom.qMobile) dom.qMobile.value = '';
+    if(dom.filterProvDesktop) dom.filterProvDesktop.value = 'all';
+    if(dom.filterProvMobile) dom.filterProvMobile.value = 'all';
     loadPosts();
 }
 
